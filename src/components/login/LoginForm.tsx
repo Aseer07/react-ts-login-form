@@ -8,15 +8,10 @@ function LoginForm() {
     toggleShowPassword,
     handleChange,
     handleSubmit,
-    resetForm,
   } = useForm({
     email: "",
     password: "",
   });
-
-  const handleReset = () => {
-    resetForm();
-  };
 
   return (
     <>
@@ -91,10 +86,7 @@ function LoginForm() {
               <p className="text-right">Forget Password</p>
             </div>
 
-            <button
-              onClick={handleReset}
-              className="bg-black text-white my-3 px-4 py-2 rounded-md w-full shadow-lg shadow-black hover:scale-105 duration-300"
-            >
+            <button className="bg-black text-white my-3 px-4 py-2 rounded-md w-full shadow-lg shadow-black hover:scale-105 duration-300">
               Log in
             </button>
 

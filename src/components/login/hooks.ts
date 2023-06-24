@@ -22,38 +22,34 @@ function useForm(initialValues: FormValues) {
     }));
   };
 
-  const validateForm = () => {
+  const validateForm = (user: FormValues): LoginErrors => {
     const newErrors: LoginErrors = {};
 
-    if (!values.email.trim()) {
+    if (!user.email.trim()) {
       newErrors.email = "Email is required";
-    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(values.email.trim())) {
+    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(user.email.trim())) {
       newErrors.email = "Email is invalid";
     }
 
-    if (!values.password.trim()) {
+    if (!user.password.trim()) {
       newErrors.password = "Password is required";
-    } else if (values.password.trim().length < 6) {
+    } else if (user.password.trim().length < 6) {
       newErrors.password = "Password should be at least 6 characters long";
     }
 
-    setErrors(newErrors);
-
-    return Object.keys(newErrors).length === 0;
+    return newErrors;
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (validateForm()) {
-      console.log("Form is valid, submit the data:", values);
-      // Perform additional form submission logic here
+    const newErrors = validateForm(values);
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+    } else {
+      setErrors({});
+      alert(JSON.stringify(values, null, 2));
+      setValues({ email: "", password: "" });
     }
-  };
-
-  const resetForm = () => {
-    setValues(initialValues);
-    setErrors({});
   };
 
   return {
@@ -63,7 +59,6 @@ function useForm(initialValues: FormValues) {
     toggleShowPassword,
     handleChange,
     handleSubmit,
-    resetForm,
   };
 }
 
